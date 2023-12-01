@@ -1,0 +1,16 @@
+{
+  "AoCDay": {
+    "prefix": ["dayFC"],
+    "body": [
+      "import { DayResult } from '../../types'",
+      "",
+      "export default function Day(): DayResult {",
+      "async function solve1(input: string[]) {return ''}",
+      "async function solve2(input: string[]) {return ''}",
+      "",
+      "return { solve1, solve2 }",
+      "}"
+    ],
+    "description": "AoC Default Day Component"
+  }
+}
