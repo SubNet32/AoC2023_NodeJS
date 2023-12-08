@@ -10,7 +10,7 @@ echo %day%|findstr /r "[^0-9]" && (
 if %day% lss 10 (
   set "day=0%day%"
 )
-type nul > "../Files/Day%day%.txt"
+type nul > "../Files/day%day%.txt"
 
 mkdir "../src/Days/Day%day%"
 set "file=../src/Days/Day%day%/day.ts"
