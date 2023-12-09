@@ -2,7 +2,10 @@ export const StringUtils = {
   isNumberString(value: string) {
     return !!value.match(/^\d+$/)
   },
-  getAllNumbersInString(value: string) {
+  getAllNumbersInString(value: string, includeNegative?: boolean) {
+    if (includeNegative) {
+      return value.match(/-{0,1}\d+/g)?.map((match) => Number(match)) ?? []
+    }
     return value.match(/\d+/g)?.map((match) => Number(match)) ?? []
   },
   getPositionInString(stringToCheck: string, value: string) {

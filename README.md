@@ -11,6 +11,8 @@ AdventOfCode by Philipp Priller
 1. Install node_modules by running `npm install`
 2. Run `npm run aoc`
 
+Run `npm run newDay` to create the files for a new day
+
 ### Selecting Day & Part
 
 - Adding a `day{n}` tag will execute the program of the given day (if omitted most recent day will be selected)
