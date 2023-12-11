@@ -18,4 +18,8 @@ export const StringUtils = {
     const safeReplaceValue = replaceValue.repeat(replaceValueLength).substring(0, replaceValueLength)
     return value.substring(0, start) + safeReplaceValue + value.substring(end)
   },
+  getCharPositionsInString(value: string, char: string) {
+    if (!value.includes(char)) return []
+    return Array.from(value).reduce<number[]>((positions, current, index) => (current === char ? [...positions, index] : positions), [])
+  },
 }
