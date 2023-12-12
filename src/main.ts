@@ -5,6 +5,17 @@ import { DayResolver } from './DayResolver'
 import { DayFile } from './types'
 import Utils from './Utils/Utils'
 
+process.on('uncaughtException', function (exception) {
+  console.log(exception) // to see your exception details in the console
+  // if you are on production, maybe you can send the exception details to your
+  // email as well ?
+})
+
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason)
+  // application specific logging, throwing an error, or other logic here
+})
+
 const filesPath = './Files/'
 readline.createInterface({
   input: process.stdin,

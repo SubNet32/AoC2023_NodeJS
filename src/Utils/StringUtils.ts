@@ -22,4 +22,7 @@ export const StringUtils = {
     if (!value.includes(char)) return []
     return Array.from(value).reduce<number[]>((positions, current, index) => (current === char ? [...positions, index] : positions), [])
   },
+  insertAt(value: string, insert: string, position: number) {
+    return (value.substring(0, position) + insert + value.substring(position + insert.length)).substring(0, value.length)
+  },
 }
