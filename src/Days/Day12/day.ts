@@ -21,13 +21,17 @@ export default function Day(): DayResult {
     }))
   }
 
-  function findPossibleAssignments(line: string, values: number[], startAt: number = 0): string[] {
+  let resultMap = new Map<string, number>()
+
+  function findPossibleAssignments(line: string, values: number[], startAt: number = 0): number {
     if (log) console.log('Matching', line, values)
+    const key = `${startAt};${values.join(';')}`
+    if (resultMap.has(key)) return resultMap.get(key) ?? 0
     const memValues = [...values]
     const lengthToMatch = memValues.shift() ?? 0
     const restLen = memValues.reduce((sum, v) => sum + v + 1, 0)
     const maxI = line.length - restLen - lengthToMatch
-    const matches: string[] = []
+    let matches = 0
     for (let i = startAt; i <= maxI; i++) {
       let match = true
       for (let s = i; s < i + lengthToMatch + 1; s++) {
@@ -54,18 +58,18 @@ export default function Day(): DayResult {
       if (match) {
         if (memValues.length) {
           let newLine = StringUtils.insertAt(line, '#'.repeat(lengthToMatch) + '.', i)
-          matches.push(...findPossibleAssignments(newLine, memValues, i + lengthToMatch + 1))
+          matches += findPossibleAssignments(newLine, memValues, i + lengthToMatch + 1)
         } else {
           if (!line.substring(i + lengthToMatch + 1).includes('#')) {
             let newLine = StringUtils.insertAt(line, '#'.repeat(lengthToMatch) + '.', i)
             if (log) console.log('Match', chalk.yellow(newLine))
-            matches.push(newLine)
+            matches++
           }
         }
       }
       if (line[i] === '#') break
     }
-
+    resultMap.set(key, matches)
     return matches
   }
 
@@ -94,52 +98,29 @@ export default function Day(): DayResult {
   async function solve1(input: string[]) {
     const rows = init(input)
     return rows.reduce((sum, row) => {
+      resultMap.clear()
       const matches = findPossibleAssignments(row.line, row.values)
       if (log) {
-        console.log('Matches', matches.length)
+        console.log('Matches', matches)
         console.log(row.line, row.values)
       }
-      matches.forEach((match) => {
-        testMatches(match, row.line, row.values)
-        if (log) {
-          console.log(
-            Array.from(match)
-              .map((q) => (q === '#' ? chalk.yellow(q) : q))
-              .join('')
-          )
-        }
-      })
+
       if (log) {
         console.log('')
         console.log('')
       }
-      return sum + matches.length
+      return sum + matches
     }, 0)
   }
 
   async function solve2(input: string[]) {
-    const rows = init(input)
-    const rows2 = init(input, 2)
-    const rows3 = init(input, 3)
     const rows5 = init(input, 5)
-    const rowsMod = init(input, 1, '?')
-    const rowsModStart = init(input, 1, '', '?')
 
-    return rows.reduce<bigint>((sum, row, index) => {
-      console.log('Row', index)
-
-      const matches = BigInt(findPossibleAssignments(row.line, row.values).length)
-      const matches2 = BigInt(findPossibleAssignments(rows2[index].line, rows2[index].values).length)
-      const matches3 = BigInt(findPossibleAssignments(rows3[index].line, rows3[index].values).length)
-      const mod = BigInt(findPossibleAssignments(rowsMod[index].line, rowsMod[index].values).length)
-      const modStart = BigInt(findPossibleAssignments(rowsModStart[index].line, rowsModStart[index].values).length)
-      const factor = matches2 / matches
-      if (matches * factor * factor !== matches3) {
-        console.log('Err')
-      }
-      const totalMatches = matches * factor ** BigInt(4)
-      return sum + totalMatches
-    }, BigInt(0))
+    return rows5.reduce((sum, row, index) => {
+      resultMap.clear()
+      const matches = findPossibleAssignments(row.line, row.values)
+      return sum + matches
+    }, 0)
   }
 
   return { solve1, solve2 }
