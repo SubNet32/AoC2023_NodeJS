@@ -52,6 +52,12 @@ export class FieldMap<T> {
     return inputMap
   }
 
+  public static fromVectorArray<T>(array: Vector2[], valueProvider: (element: Vector2, index: number) => T) {
+    const map = new FieldMap<T>()
+    array.forEach((vector, index) => map.addItem(vector, valueProvider(vector, index)))
+    return map
+  }
+
   public findFieldWithValue(value: T) {
     return Array.from(this.map.entries()).find(([_, fieldValue]) => fieldValue === value)
   }
@@ -108,5 +114,15 @@ export class FieldMap<T> {
   public isInBounds(point: Point2D) {
     if (!this.boundaries) return false
     return !(point.x > this.boundaries.end.x || point.x < this.boundaries.start.x || point.y > this.boundaries.end.y || point.y < this.boundaries.start.y)
+  }
+
+  public toArray() {
+    return Array.from(this.map.entries()).map(([pos, value]) => [Vector2.FromString(pos), value])
+  }
+
+  public removeItemsWithValue(value: T) {
+    Array.from(this.map.entries()).forEach(([key, entryValue]) => {
+      if (value === entryValue) this.map.delete(key)
+    })
   }
 }

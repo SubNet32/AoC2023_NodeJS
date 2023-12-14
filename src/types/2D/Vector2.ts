@@ -1,3 +1,4 @@
+import { Rectangle } from './Rectangle'
 import { Point2D } from './types2D'
 
 const pointAsStringSeparator = '|'
@@ -87,5 +88,30 @@ export default class Vector2 implements Point2D {
     this.x *= -1
     this.y *= -1
     return this
+  }
+
+  public static SortByY(a: Point2D, b: Point2D) {
+    return a.y - b.y
+  }
+
+  public static SortByX(a: Point2D, b: Point2D) {
+    return a.x - b.x
+  }
+
+  public static Sort(a: Point2D, b: Point2D) {
+    const r = a.x - b.x
+    if (r) return r
+    return a.y - b.y
+  }
+
+  public static GetBounds(vectors: Point2D[]) {
+    let limits: (number | null)[] = [null, null, null, null]
+    vectors.forEach((v) => {
+      if (limits[0] === null || v.x < limits[0]) limits[0] = v.x
+      if (limits[1] === null || v.y < limits[1]) limits[1] = v.y
+      if (limits[2] === null || v.x > limits[2]) limits[2] = v.x
+      if (limits[3] === null || v.y > limits[3]) limits[3] = v.y
+    })
+    const bounds = new Rectangle({ x: limits[0] ?? 0, y: limits[1] ?? 0 }, { x: limits[2] ?? 0, y: limits[3] ?? 0 })
   }
 }
