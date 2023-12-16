@@ -33,6 +33,10 @@ export class FieldMap<T> {
     return points.map((point) => [point, this.map.get(Vector2.toString(point))])
   }
 
+  public getAllItems(): [Point2D, T | undefined][] {
+    return Array.from(this.map.entries()).map(([pos, value]) => [Vector2.FromString(pos), value])
+  }
+
   public hasItem(point: Point2D) {
     return this.map.has(Vector2.toString(point))
   }
