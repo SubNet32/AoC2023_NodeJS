@@ -21,6 +21,7 @@ export default class Vector2 implements Point2D {
   public static Right = new Vector2(1, 0)
   public static Up = new Vector2(0, 1)
   public static Down = new Vector2(0, -1)
+  public static Zero = new Vector2(0, 0)
 
   public add(vector: Point2D) {
     this.x += vector.x
@@ -43,9 +44,14 @@ export default class Vector2 implements Point2D {
   }
 
   public normalize() {
-    this.x = Math.sign(this.x)
-    this.y = Math.sign(this.y)
+    Vector2.Normalize(this)
     return this
+  }
+
+  public static Normalize(vector: Vector2) {
+    vector.x = Math.sign(vector.x)
+    vector.y = Math.sign(vector.y)
+    return vector
   }
 
   public length() {

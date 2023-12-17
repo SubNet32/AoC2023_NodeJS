@@ -53,6 +53,7 @@ export class FieldMap<T> {
         if (value !== undefined) inputMap.addItem({ x, y }, value)
       })
     })
+    inputMap.calcBounds(true)
     return inputMap
   }
 
