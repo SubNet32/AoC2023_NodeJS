@@ -120,4 +120,10 @@ export default class Vector2 implements Point2D {
     })
     const bounds = new Rectangle({ x: limits[0] ?? 0, y: limits[1] ?? 0 }, { x: limits[2] ?? 0, y: limits[3] ?? 0 })
   }
+
+  public static multiply(vector: Vector2, factor: number) {
+    vector.x *= factor
+    vector.y *= factor
+    return vector
+  }
 }
