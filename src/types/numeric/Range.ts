@@ -17,6 +17,11 @@ export class Range implements IRange {
     return new Range(range.start, range.end)
   }
 
+  public static FromNumbers(start: number, end: number) {
+    if (end < start) return null
+    return new Range(start, end)
+  }
+
   public inRange(number: number) {
     return number >= this.start && number <= this.end
   }
@@ -46,6 +51,10 @@ export class Range implements IRange {
       result.push(new Range(range.end + 1, this.end))
     }
     return result
+  }
+
+  public size() {
+    return this.end - this.start + 1
   }
 
   public toString() {
