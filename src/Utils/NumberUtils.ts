@@ -12,4 +12,7 @@ export const NumberUtils = {
     const _lcm = (x: number, y: number) => (x * y) / gcd(x, y)
     return [...arr].reduce((a, b) => _lcm(a, b))
   },
+  mod(n: number, m: number) {
+    return ((n % m) + m) % m
+  },
 }
