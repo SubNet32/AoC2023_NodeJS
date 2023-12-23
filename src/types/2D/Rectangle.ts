@@ -1,3 +1,4 @@
+import { ICube } from '../3D/Cube'
 import Vector2 from './Vector2'
 import { Point2D } from './types2D'
 
@@ -17,6 +18,10 @@ export class Rectangle implements IRectangle {
 
   public containsPoint(point: Point2D) {
     return !!point && point.x >= this.start.x && point.y >= this.start.y && point.x <= this.end.x && point.y <= this.end.y
+  }
+
+  public static FromCube(cube: ICube) {
+    return new Rectangle({ x: cube.start.x, y: cube.start.y }, { x: cube.end.x, y: cube.end.y })
   }
 
   public grow(amount: number = 1) {
