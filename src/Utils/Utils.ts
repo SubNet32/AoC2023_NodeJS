@@ -61,6 +61,16 @@ const Utils = {
     if (item) items.push(item)
     return item
   },
+  countElements<T>(items: T[], compareFunction: (a: T, b: T) => boolean = (a, b) => a === b) {
+    const result: { item: T; count: number }[] = []
+    items.forEach((item) => {
+      const foundItem = result.find((r) => compareFunction(r.item, item))
+      if (foundItem) foundItem.count++
+      else result.push({ item, count: 1 })
+    })
+    result.sort((a, b) => a.count - b.count)
+    return result
+  },
 }
 
 export default Utils
