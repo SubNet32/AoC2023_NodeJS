@@ -1,6 +1,7 @@
 import { DayResult } from '../../types'
 import { Rectangle } from '../../types/2D/Rectangle'
 import Vector3 from '../../types/3D/Vector3'
+import { init as initZ3 } from 'z3-solver'
 
 type HailStone = {
   position: Vector3
@@ -69,8 +70,29 @@ export default function Day(): DayResult {
 
   async function solve2(input: string[]) {
     const hailStones = init(input, 2)
+    const { Context } = await initZ3()
+    const { Real, Solver } = Context('main')
 
-    return ''
+    const x = Real.const('x')
+    const y = Real.const('y')
+    const z = Real.const('z')
+    const vx = Real.const('vx')
+    const vy = Real.const('vy')
+    const vz = Real.const('vz')
+
+    const solver = new Solver()
+
+    hailStones.slice(0, 3).forEach(({ position: { x: hx, y: hy, z: hz }, velocity: { x: hvx, y: hvy, z: hvz } }, index) => {
+      const t = Real.const(`t${index}`)
+      solver.add(t.ge(0))
+      solver.add(x.add(vx.mul(t)).eq(t.mul(hvx).add(hx)))
+      solver.add(y.add(vy.mul(t)).eq(t.mul(hvy).add(hy)))
+      solver.add(z.add(vz.mul(t)).eq(t.mul(hvz).add(hz)))
+    })
+    await solver.check()
+    const model = solver.model()
+
+    return Number(model.eval(x)) + Number(model.eval(y)) + Number(model.eval(z))
   }
 
   return { solve1, solve2 }

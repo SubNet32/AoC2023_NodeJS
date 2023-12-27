@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "chalk": "^4.1.2",
-    "heap-js": "^2.3.0"
+    "heap-js": "^2.3.0",
+    "z3-solver": "^4.12.4"
   }
 }
